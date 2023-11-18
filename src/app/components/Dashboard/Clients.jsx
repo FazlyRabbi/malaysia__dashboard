@@ -40,7 +40,7 @@ export default function Clients() {
 
   // Update the key whenever the 'date' state changes
   const { data, error, isLoading } = useSWR(
-    `${process.env.API_URL}/api/client`,
+    `/api/client`,
     async () => {
       const response = await axios.get(`/api/client`);
       setClients(response?.data?.data);
@@ -49,7 +49,7 @@ export default function Clients() {
 
   const handleRefetch = async () => {
     // Use the mutate function to refetch the data
-    await mutate(`${process.env.API_URL}/api/client`);
+    await mutate(`/api/client`);
   };
 
   useEffect(() => {
@@ -69,7 +69,7 @@ export default function Clients() {
     }).then(async (result) => {
       if (!result?.isConfirmed) return;
 
-      const res = await axios.put(`${process.env.API_URL}/api/client`, {
+      const res = await axios.put(`/api/client`, {
         id: id,
       });
       if (!res.data.ok) return;
@@ -95,7 +95,7 @@ export default function Clients() {
 
     try {
       const response = await axios.patch(
-        `${process.env.API_URL}/api/client`,
+        `/api/client`,
         edit
       );
 

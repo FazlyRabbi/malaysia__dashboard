@@ -34,12 +34,12 @@ export default function AddClient() {
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchRekod = async () => {
-    const response = await axios.get(`${process.env.API_URL}/api/rekod`);
+    const response = await axios.get(`/api/rekod`);
     setRekod(response.data.data);
   };
 
   const fetchGroup = async () => {
-    const response = await axios.get(`${process.env.API_URL}/api/group`);
+    const response = await axios.get(`/api/group`);
     setGroup(response.data.data);
   };
 
@@ -59,7 +59,7 @@ export default function AddClient() {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        `${process.env.API_URL}/api/client`,
+        `/api/client`,
         client
       );
       if (response.data.ok) {

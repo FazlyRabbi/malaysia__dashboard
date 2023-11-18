@@ -34,9 +34,9 @@ export default function Rekod() {
   const [filtered, setFiltered] = useState([]);
   // Update the key whenever the 'date' state changes
   const { data, error, isLoading } = useSWR(
-    `${process.env.API_URL}/api/client`,
+    `/api/client`,
     async () => {
-      const response = await axios.get(`${process.env.API_URL}/api/rekod`);
+      const response = await axios.get(`/api/rekod`);
       setClients(response?.data?.data);
     }
   );
@@ -63,7 +63,7 @@ export default function Rekod() {
     }).then(async (result) => {
       if (!result?.isConfirmed) return;
 
-      const res = await axios.put(`${process.env.API_URL}/api/rekod`, {
+      const res = await axios.put(`/api/rekod`, {
         id: id,
       });
 
@@ -141,7 +141,7 @@ export default function Rekod() {
     setLoading(true);
     try {
       const response = await axios.post(
-        `${process.env.API_URL}/api/rekod`,
+        `/api/rekod`,
         rekod
       );
       if (response.data.ok) {

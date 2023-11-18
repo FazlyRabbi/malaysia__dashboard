@@ -35,7 +35,7 @@ export default function Group() {
 
   // Update the key whenever the 'date' state changes
   const { data, error, isLoading } = useSWR(
-    `${process.env.API_URL}/api/client`,
+    `/api/client`,
     async () => {
       const response = await axios.get(`/api/group`);
       setClients(response?.data?.data);
@@ -44,7 +44,7 @@ export default function Group() {
 
   const handleRefetch = async () => {
     // Use the mutate function to refetch the data
-    await mutate(`${process.env.API_URL}/api/group`);
+    await mutate(`/api/group`);
   };
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function Group() {
     }).then(async (result) => {
       if (!result?.isConfirmed) return;
 
-      const res = await axios.put(`${process.env.API_URL}/api/group`, {
+      const res = await axios.put(`/api/group`, {
         id: id,
       });
 
@@ -142,7 +142,7 @@ export default function Group() {
     setLoading(true);
     try {
       const response = await axios.post(
-        `${process.env.API_URL}/api/group`,
+        `/api/group`,
         group
       );
       if (response.data.ok) {
