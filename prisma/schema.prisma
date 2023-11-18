@@ -1,0 +1,37 @@
+datasource db {
+  provider = "postgresql"
+  url      = "postgres://root:Z0jckVwwbi1pogBanDdaljOhKlsxWIXu@dpg-cjn251the99c73db4qlg-a.singapore-postgres.render.com/root_3rqy"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Client {
+  id       Int    @id @default(autoincrement())
+  date     String?
+  visa     String?
+  fullName String?
+  country  String?
+  passport String?
+  status   String @default("proccesing")
+  // Relation to Group
+  groupId  Int?
+  group    Group? @relation(fields: [groupId], references: [id])
+
+  // Relation to Record
+  recordId Int?
+  record   Record? @relation(fields: [recordId], references: [id])
+}
+
+model Group {
+  id      Int      @id @default(autoincrement())
+  name    String
+  clients Client[]
+}
+
+model Record {
+  id      Int      @id @default(autoincrement())
+  content String
+  clients Client[]
+}

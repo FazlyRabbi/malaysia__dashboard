@@ -1,0 +1,50 @@
+/* Dropdown.module.css */
+.dropdown {
+    position: relative;
+    display: inline-block;
+    text-align: left;
+  }
+  
+  .select {
+    display: none;
+  }
+  
+  .dropdown-container {
+    width: 10rem;
+    border: 1px solid #ccc;
+    background-color: white;
+    padding: 0.5rem;
+  }
+  
+  .dropdown-button {
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+  }
+  
+  .dropdown-list {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #ccc;
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+  }
+  
+  .dropdown-list.visible {
+    display: block;
+  }
+  
+  .option {
+    padding: 0.5rem;
+    color: #333; /* Customize the text color */
+  }
+  
+  .option:hover {
+    background-color: #f0f0f0;
+  }
+  

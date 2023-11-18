@@ -1,0 +1,9 @@
+
+
+npx prisma migrate dev --name init
+
+ BPP/13011/FCNDMK01007784
+ 797503-W
+ A06573522
+
+ https://eservices.imi.gov.my.myimmsvis.com/search?app_number=BPP%2F13011%2FFCNDMK01007784&agencyIndicator=1&app_reg_company=797503-w&document_no=&submit=CARIAN
