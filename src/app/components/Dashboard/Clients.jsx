@@ -42,7 +42,7 @@ export default function Clients() {
   const { data, error, isLoading } = useSWR(
     `${process.env.API_URL}/api/client`,
     async () => {
-      const response = await axios.get(`${process.env.API_URL}/api/client`);
+      const response = await axios.get(`/api/client`);
       setClients(response?.data?.data);
     }
   );

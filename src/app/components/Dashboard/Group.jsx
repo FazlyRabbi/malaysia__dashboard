@@ -37,7 +37,7 @@ export default function Group() {
   const { data, error, isLoading } = useSWR(
     `${process.env.API_URL}/api/client`,
     async () => {
-      const response = await axios.get(`${process.env.API_URL}/api/group`);
+      const response = await axios.get(`/api/group`);
       setClients(response?.data?.data);
     }
   );

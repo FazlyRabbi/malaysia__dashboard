@@ -43,7 +43,7 @@ export default function Rekod() {
 
   const handleRefetch = async () => {
     // Use the mutate function to refetch the data
-    await mutate(`${process.env.API_URL}/api/rekod`);
+    await mutate(`/api/rekod`);
   };
 
   useEffect(() => {
