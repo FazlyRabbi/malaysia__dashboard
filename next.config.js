@@ -6,8 +6,8 @@ const nextConfig = removeImports({
   
   cors: {
     allowedHeaders: ["*"],
-    allowedOrigins: ["http://localhost:3000","https://haircuts-express.vercel.app","*"],
-    allowedMethods: ["GET", "POST"],
+    allowedOrigins: ["http://localhost:3000","https://lively-custard-023a34.netlify.app","*"],
+    allowedMethods: ["GET", "POST", "PUT", "PATCH","DELETE" ],
   },
 
   async headers() {
