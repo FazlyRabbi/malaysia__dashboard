@@ -39,13 +39,10 @@ export default function Clients() {
   const [filtered, setFiltered] = useState([]);
 
   // Update the key whenever the 'date' state changes
-  const { data, error, isLoading } = useSWR(
-    `/api/client`,
-    async () => {
-      const response = await axios.get(`/api/client`);
-      setClients(response?.data?.data);
-    }
-  );
+  const { data, error, isLoading } = useSWR(`/api/client`, async () => {
+    const response = await axios.get(`/api/client`);
+    setClients(response?.data?.data);
+  });
 
   const handleRefetch = async () => {
     // Use the mutate function to refetch the data
@@ -94,10 +91,7 @@ export default function Clients() {
     setLoading(true);
 
     try {
-      const response = await axios.patch(
-        `/api/client`,
-        edit
-      );
+      const response = await axios.patch(`/api/client`, edit);
 
       if (response.data.ok) {
         setTimeout(() => {
@@ -113,7 +107,7 @@ export default function Clients() {
         setLoading(false);
         setEditState(false);
         setEdit(null);
-        handleRefetch()
+        handleRefetch();
         return;
       }
 
@@ -467,7 +461,7 @@ export default function Clients() {
                   Tarikh Permohonan
                 </Typography>
                 <Input
-                 required
+                  required
                   disabled={loading}
                   onChange={(e) => setEdit({ ...edit, date: e.target.value })}
                   value={edit?.date}
@@ -484,7 +478,7 @@ export default function Clients() {
                   Nombor Permohonan
                 </Typography>
                 <Input
-                 required
+                  required
                   disabled={loading}
                   onChange={(e) => setEdit({ ...edit, visa: e.target.value })}
                   value={edit?.visa}
@@ -564,9 +558,8 @@ export default function Clients() {
                   value={edit?.status}
                   className=" border w-full mt-4 p-2 space-y-3 rounded-md border-gray-500"
                 >
-                  <option>BAYAR</option>
-                  <option>FAILD</option>
-                  <option>ACTIVE</option>
+                  <option>LULUS</option>
+                  <option>BARU</option>
                 </select>
               </div>
             </div>

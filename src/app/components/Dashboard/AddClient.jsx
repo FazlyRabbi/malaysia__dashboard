@@ -21,8 +21,8 @@ const init = {
   country: "",
   passport: "",
   status: "",
-  groupId: 0,
-  recordId: 0,
+  groupId: null,
+  recordId: null,
 };
 
 export default function AddClient() {
@@ -170,9 +170,9 @@ export default function AddClient() {
                       }
                       className=" border w-full mt-4 p-2 space-y-3 rounded-md border-gray-500"
                     >
-                      <option>BAYAR</option>
-                      <option>FAILD</option>
-                      <option>ACTIVE</option>
+                      <option>LULUS</option>
+                      <option>BARU</option>
+                     
                     </select>
                   </div>
 
