@@ -7,6 +7,7 @@ export async function GetClientByVisa_db(num) {
     where: {
       visa: num,
     },
+
     include: {
       group: true, // Include the related group
       record: true, // Include the related record
@@ -31,7 +32,7 @@ export async function GetClientByPassport_db(num) {
 export async function GetGroup_db(name) {
   const records = await prisma.Group.findFirst({
     where: {
-      name:name,
+      name: name,
     },
     include: {
       clients: true, // Include the related group
