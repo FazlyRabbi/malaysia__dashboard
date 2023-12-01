@@ -560,6 +560,7 @@ export default function Clients() {
                 >
                   <option>LULUS</option>
                   <option>BARU</option>
+                  <option>BAYER</option>
                 </select>
               </div>
             </div>
