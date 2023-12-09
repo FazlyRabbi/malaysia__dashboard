@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+
 import {
   Card,
   Chip,
@@ -11,6 +12,7 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
+
 // import leftmenu
 import LeftMenu from "./LeftMenu";
 // import useSweetAlert from "@/components/lib/sweetalert2";
@@ -38,9 +40,16 @@ export default function Clients() {
   // set filtered members
   const [filtered, setFiltered] = useState([]);
 
+  const [groups, setGroups] = useState([]);
+  const [rekods, setRekods] = useState([]);
+
   // Update the key whenever the 'date' state changes
   const { data, error, isLoading } = useSWR(`/api/client`, async () => {
     const response = await axios.get(`/api/client`);
+    const groupRes = await axios.get(`/api/group`);
+    const rekodRes = await axios.get(`/api/rekod`);
+    setRekods(rekodRes?.data?.data);
+    setGroups(groupRes?.data?.data);
     setClients(response?.data?.data);
   });
 
@@ -450,13 +459,13 @@ export default function Clients() {
             <div
               className="
                   
-                   gap-y-10
+                   gap-10
                 
                    p-3 py-4 rounded-sm
                   justify-items-center
                 grid grid-cols-2  xl:grid-cols-3"
             >
-              <div>
+              <div className="w-full">
                 <Typography variant="h6" color="blue-gray" className="-mb-3">
                   Tarikh Permohonan
                 </Typography>
@@ -473,7 +482,7 @@ export default function Clients() {
                   }}
                 />
               </div>
-              <div>
+              <div className="w-full">
                 <Typography variant="h6" color="blue-gray" className="-mb-3">
                   Nombor Permohonan
                 </Typography>
@@ -490,7 +499,7 @@ export default function Clients() {
                   }}
                 />
               </div>
-              <div>
+              <div className="w-full">
                 <Typography variant="h6" color="blue-gray" className="-mb-3">
                   Nama Pemohon
                 </Typography>
@@ -509,7 +518,7 @@ export default function Clients() {
                   }}
                 />
               </div>
-              <div>
+              <div className="w-full">
                 <Typography variant="h6" color="blue-gray" className="-mb-3">
                   Warganegara
                 </Typography>
@@ -528,7 +537,7 @@ export default function Clients() {
                   }}
                 />
               </div>
-              <div>
+              <div className="w-full">
                 <Typography variant="h6" color="blue-gray" className="-mb-3">
                   No Dokumen
                 </Typography>
@@ -548,9 +557,53 @@ export default function Clients() {
                 />
               </div>
 
-              <div>
+              <div className="w-full">
                 <Typography variant="h6" color="blue-gray" className="-mb-3">
                   Status Permohonan
+                </Typography>
+                <select
+                  disabled={loading}
+                  onChange={(e) => setEdit({ ...edit, status: e.target.value })}
+                  value={edit?.status}
+                  className=" border w-full  mt-4 p-2 space-y-3 rounded-md border-gray-500"
+                >
+                  <option>LULUS</option>
+                  <option>BARU</option>
+                  <option>BAYER</option>
+                </select>
+              </div>
+            </div>
+
+            <div
+              className="  gap-10
+                
+              
+                p-3 py-4 rounded-sm
+              
+             grid grid-cols-1 md:grid-cols-2  xl:grid-cols-2 "
+            >
+              <div>
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Group
+                </Typography>
+                <select
+                  disabled={loading}
+                  onChange={(e) =>
+                    setEdit({ ...edit, groupId: e.target.value })
+                  }
+                  className=" border w-full mt-4 p-2 space-y-3 rounded-md border-gray-500"
+                >
+                  {groups?.map((name, index) => (
+                    <option value={name.id} key={index}>
+                      {name.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Rekod
                 </Typography>
                 <select
                   disabled={loading}
@@ -564,6 +617,7 @@ export default function Clients() {
                 </select>
               </div>
             </div>
+
             <Button
               disabled={loading}
               type="submit"

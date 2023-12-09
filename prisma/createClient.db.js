@@ -10,7 +10,23 @@ export const CreateClient_db = async (data) => {
 };
 
 export async function GetClient_db() {
-  const records = await prisma.Client.findMany();
+  const records = await prisma.Client.findMany({
+    include: {
+      group: {
+        select: {
+          name: true,
+        },
+      },
+      record: {
+        select: {
+          content: true,
+        },
+      },
+    },
+    orderBy: {
+      id: 'asc', // 'asc' for ascending order, 'desc' for descending order
+    },
+  });
   return records;
 }
 
@@ -32,7 +48,14 @@ export async function UpdateClient_db(clientId, newData) {
     where: {
       id: id,
     },
-    data: newData,
+    data: {
+      ...newData, // Spread the object containing all updated fields
+      group: {
+        connect: {
+          id: newData.groupId, // Connect to the group specified in clientData
+        },
+      },
+    },
   });
 
   return response;

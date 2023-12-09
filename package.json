@@ -13,7 +13,7 @@
     "@faker-js/faker": "^8.2.0",
     "@heroicons/react": "^2.0.18",
     "@material-tailwind/react": "^2.1.0",
-    "@prisma/client": "^5.6.0",
+    "@prisma/client": "^5.7.0",
     "@tanstack/react-query": "^4.33.0",
     "@uiw/react-markdown-editor": "^5.11.2",
     "@uiw/react-markdown-preview": "^4.1.10",
