@@ -10,8 +10,6 @@ generator client {
 
 model Client {
   id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now()) @map("created_at") // Add this line
-  updatedAt DateTime @updatedAt @map("updated_at")     // Add this line
 
   date      String?
   visa      String?
