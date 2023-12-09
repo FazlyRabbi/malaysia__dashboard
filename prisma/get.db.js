@@ -35,7 +35,11 @@ export async function GetGroup_db(name) {
       name: name,
     },
     include: {
-      clients: true, // Include the related group
+      clients: {
+        orderBy: {
+          id: "asc", // or 'desc' for descending order
+        },
+      }, // Include the related group
     },
   });
 
