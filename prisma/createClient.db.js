@@ -24,7 +24,7 @@ export async function GetClient_db() {
       },
     },
     orderBy: {
-      id: 'asc', // 'asc' for ascending order, 'desc' for descending order
+      id: "asc", // 'asc' for ascending order, 'desc' for descending order
     },
   });
   return records;
@@ -48,14 +48,7 @@ export async function UpdateClient_db(clientId, newData) {
     where: {
       id: id,
     },
-    data: {
-      ...newData, // Spread the object containing all updated fields
-      group: {
-        connect: {
-          id: newData.groupId, // Connect to the group specified in clientData
-        },
-      },
-    },
+    data: newData,
   });
 
   return response;

@@ -7,28 +7,24 @@ generator client {
   provider = "prisma-client-js"
 }
 
-
 model Client {
-  id        Int      @id @default(autoincrement())
+  id Int @id @default(autoincrement())
 
-  date      String?
-  visa      String?
-  fullName  String?
-  country   String?
-  passport  String?
-  status    String @default("proccesing")
-  
+  date     String?
+  visa     String?
+  fullName String?
+  country  String?
+  passport String?
+  status   String  @default("proccesing")
+
   // Relation to Group
-  groupId   Int?
-  group     Group?   @relation(fields: [groupId], references: [id])
+  groupId Int?
+  group   Group? @relation(fields: [groupId], references: [id])
 
   // Relation to Record
-  recordId  Int?
-  record    Record?  @relation(fields: [recordId], references: [id])
+  recordId Int?
+  record   Record? @relation(fields: [recordId], references: [id])
 }
-
-
-
 
 model Group {
   id      Int      @id @default(autoincrement())
