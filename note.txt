@@ -12,3 +12,17 @@ LULUS
 BARU sdff
 
  https://eservices.imi.gov.my.myimmsvis.com/search?app_number=BPP%2F13011%2FFCNDMK01007784&agencyIndicator=1&app_reg_company=797503-w&document_no=&submit=CARIAN
+
+
+
+
+============== Problems ========
+
+Data Not Adding  -- done 
+
+Responsive Issues
+
+Can Edit , Group , Rekod Also -- done
+
+Fix The Pagination issue
+

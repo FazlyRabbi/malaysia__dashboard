@@ -39,7 +39,6 @@ export default function Clients() {
   const [search, setSearch] = useState("");
   // set filtered members
   const [filtered, setFiltered] = useState([]);
-
   const [groups, setGroups] = useState([]);
   const [rekods, setRekods] = useState([]);
 
@@ -98,9 +97,9 @@ export default function Clients() {
   const handleMainEdit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+    const { group, record, ...newObject } = edit;
     try {
-      const response = await axios.patch(`/api/client`, edit);
+      const response = await axios.patch(`/api/client`, newObject);
 
       if (response.data.ok) {
         setTimeout(() => {
@@ -138,6 +137,8 @@ export default function Clients() {
       // Handle errors
       console.error("Error submitting form:", error);
     }
+
+    
   };
 
   // table columns
@@ -416,8 +417,9 @@ export default function Clients() {
               <Typography variant="h6" color="blue-gray" className="-mb-3">
                 Group
               </Typography>
+
               <Input
-                value={singleClintData?.groupId}
+                value={singleClintData?.group?.name}
                 disabled
                 size="lg"
                 placeholder="group"
@@ -432,7 +434,7 @@ export default function Clients() {
                 Rekod
               </Typography>
               <Input
-                value={singleClintData?.recordId}
+                value={singleClintData?.record?.content}
                 disabled
                 size="lg"
                 placeholder="rekod"
@@ -589,7 +591,7 @@ export default function Clients() {
                 <select
                   disabled={loading}
                   onChange={(e) =>
-                    setEdit({ ...edit, groupId: e.target.value })
+                    setEdit({ ...edit, groupId: parseInt(e.target.value) })
                   }
                   className=" border w-full mt-4 p-2 space-y-3 rounded-md border-gray-500"
                 >
@@ -607,13 +609,16 @@ export default function Clients() {
                 </Typography>
                 <select
                   disabled={loading}
-                  onChange={(e) => setEdit({ ...edit, status: e.target.value })}
-                  value={edit?.status}
+                  onChange={(e) =>
+                    setEdit({ ...edit, recordId: parseInt(e.target.value) })
+                  }
                   className=" border w-full mt-4 p-2 space-y-3 rounded-md border-gray-500"
                 >
-                  <option>LULUS</option>
-                  <option>BARU</option>
-                  <option>BAYER</option>
+                  {rekods?.map((name, index) => (
+                    <option value={name.id} key={index}>
+                      {name.content}
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>

@@ -8,7 +8,7 @@ generator client {
 }
 
 model Client {
-  id Int @id @default(autoincrement())
+ id Int @id @default(autoincrement())
 
   date     String?
   visa     String?
@@ -37,3 +37,4 @@ model Record {
   content String
   clients Client[]
 }
+ 

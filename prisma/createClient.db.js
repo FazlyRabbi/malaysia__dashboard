@@ -48,8 +48,12 @@ export async function UpdateClient_db(clientId, newData) {
     where: {
       id: id,
     },
-    data: newData,
+    data: {
+      ...newData, // Existing data updates
+      groupId: newData.groupId, // Update group relation
+      recordId: newData.recordId, // Update record relation
+    },
   });
 
-  return response;
+  return newData;
 }
