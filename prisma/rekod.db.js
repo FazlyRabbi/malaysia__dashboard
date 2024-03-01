@@ -2,12 +2,20 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+// export const CreateRekod_db = async (data) => {
+//   const response = await prisma.Record.create({
+//     data: data,
+//   });
+//   return response;
+// };
+
 export const CreateRekod_db = async (data) => {
-  const response = await prisma.Record.create({
+  const response = await prisma.Record.createMany({
     data: data,
   });
   return response;
 };
+
 
 export async function GetRekod_db() {
   const records = await prisma.Record.findMany({

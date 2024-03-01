@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-
 import {
   Card,
   Chip,
@@ -12,7 +11,6 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-
 // import leftmenu
 import LeftMenu from "./LeftMenu";
 // import useSweetAlert from "@/components/lib/sweetalert2";
@@ -21,7 +19,7 @@ import { HiMenuAlt1 } from "react-icons/hi";
 import { TiDeleteOutline } from "react-icons/ti";
 import useStore from "../../store/store";
 import useSWR, { mutate } from "swr";
-
+import JsonToCsv from "react-json-to-csv";
 import axios from "axios";
 import useSweetAlert from "../lib/useSweetAlert";
 
@@ -47,6 +45,7 @@ export default function Clients() {
     const response = await axios.get(`/api/client`);
     const groupRes = await axios.get(`/api/group`);
     const rekodRes = await axios.get(`/api/rekod`);
+
     setRekods(rekodRes?.data?.data);
     setGroups(groupRes?.data?.data);
     setClients(response?.data?.data);
@@ -55,6 +54,28 @@ export default function Clients() {
   const handleRefetch = async () => {
     // Use the mutate function to refetch the data
     await mutate(`/api/client`);
+  };
+
+  // Same fetch/load logic as in previous responses
+  // Assuming 'clients' is your JSON data
+
+  const downloadCsv = () => {
+    // Create a blob from the response data
+    const blob = new Blob([JSON.stringify(rekods)], {
+      type: "application/json",
+    });
+
+    // Create a link element
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+    link.download = "rekods.json";
+
+    // Append the link to the document and click it programmatically
+    document.body.appendChild(link);
+    link.click();
+
+    // Clean up
+    document.body.removeChild(link);
   };
 
   useEffect(() => {
@@ -137,8 +158,6 @@ export default function Clients() {
       // Handle errors
       console.error("Error submitting form:", error);
     }
-
-    
   };
 
   // table columns
@@ -248,6 +267,8 @@ export default function Clients() {
           {/* header */}
           <div className="  bg-white flex items-center  px-10 justify-between  h-[5rem] cutstomShad  w-full  mb-8">
             <h1 className=" uppercase  text-[#223354] font-bold">Clients</h1>
+
+            <button onClick={downloadCsv}>Download CSV</button>
 
             <div>
               <HiMenuAlt1

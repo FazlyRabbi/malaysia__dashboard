@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = "postgres://imms_user:K7lmlXRLNDTENXVcFOprsukrvbDFdRzI@dpg-clj0tehe313s73ajk2tg-a.oregon-postgres.render.com/imms"
+  url      = "postgresql://root:root@203.161.57.193:5432/myimms"
 }
 
 generator client {

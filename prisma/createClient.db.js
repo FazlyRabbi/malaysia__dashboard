@@ -2,8 +2,14 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
+// export const CreateClient_db = async (data) => {
+//   const response = await prisma.Client.create({
+//     data: data,
+//   });
+//   return response;
+// };
 export const CreateClient_db = async (data) => {
-  const response = await prisma.Client.create({
+  const response = await prisma.Client.createMany({
     data: data,
   });
   return response;

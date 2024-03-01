@@ -20,10 +20,10 @@ BARU sdff
 
 Data Not Adding  -- done 
 
-Responsive Issues
+Responsive Issues -- done
 
 Can Edit , Group , Rekod Also -- done
 
-Fix The Pagination issue
+Fix The Pagination issue -- done 
 
-add some more options for status
+add some more options for status -- done
