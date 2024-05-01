@@ -1,40 +1,71 @@
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://root:root@203.161.57.193:5432/myimms"
+  url      = "postgresql://recharge_owner:xnM91QCwdIvj@ep-aged-math-a5131neg.us-east-2.aws.neon.tech/recharge?sslmode=require"
 }
 
 generator client {
   provider = "prisma-client-js"
 }
 
-model Client {
- id Int @id @default(autoincrement())
-
-  date     String?
-  visa     String?
-  fullName String?
-  country  String?
-  passport String?
-  status   String  @default("proccesing")
-
-  // Relation to Group
-  groupId Int?
-  group   Group? @relation(fields: [groupId], references: [id])
-
-  // Relation to Record
-  recordId Int?
-  record   Record? @relation(fields: [recordId], references: [id])
+model DataPack {
+  id           Int    @id @default(autoincrement())
+  oparetor     String
+  pack         String
+  discount     String
+  todayPrice   String
+  officalPrice String
+  validity     String
 }
 
-model Group {
-  id      Int      @id @default(autoincrement())
-  name    String
-  clients Client[]
+model MinutePack {
+  id           Int    @id @default(autoincrement())
+  oparetor     String
+  pack         String
+  discount     String
+  todayPrice   String
+  officalPrice String
+  validity     String
 }
 
-model Record {
-  id      Int      @id @default(autoincrement())
-  content String
-  clients Client[]
+model BundlePack {
+  id           Int    @id @default(autoincrement())
+  oparetor     String
+  pack         String
+  discount     String
+  todayPrice   String
+  officalPrice String
+  validity     String
 }
- 
+
+
+
+// model Client {
+//  id Int @id @default(autoincrement())
+
+//   date     String?
+//   visa     String?
+//   fullName String?
+//   country  String?
+//   passport String?
+//   status   String  @default("proccesing")
+
+//   // Relation to Group
+//   groupId Int?
+//   group   Group? @relation(fields: [groupId], references: [id])
+
+//   // Relation to Record
+//   recordId Int?
+//   record   Record? @relation(fields: [recordId], references: [id])
+// }
+
+// model Group {
+//   id      Int      @id @default(autoincrement())
+//   name    String
+//   clients Client[]
+// }
+
+// model Record {
+//   id      Int      @id @default(autoincrement())
+//   content String
+//   clients Client[]
+// }

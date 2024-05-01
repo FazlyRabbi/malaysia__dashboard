@@ -1,18 +1,18 @@
 import {
-  GetClientByVisa_db,
-  GetClientByPassport_db,
-  GetGroup_db,
-} from "../../../prisma/get.db";
+  CreateBundlePack_db,
+  GetBundlePacks_db,
+  DeleteBundlePack_db,
+  UpdateBundlePack_db
+} from "../../../prisma/bundlePack.db.js";
 
-export async function getClientByVisa_cont(req) {
+
+export async function CreateBundlePack_cont(req) {
   try {
-    const { visa } = await req.json();
-
-    const res = await GetClientByVisa_db(visa);
-
+    const data = await req.json();
+    const res = await CreateBundlePack_db(data);
     const responseData = {
       ok: true,
-      message: "Client Get successfully.",
+      message: "Bundle pack created successfully.",
       data: res,
     };
 
@@ -28,7 +28,7 @@ export async function getClientByVisa_cont(req) {
   } catch (err) {
     const responseData = {
       ok: false,
-      message: "Internal Server Error!",
+      message: "Failed to create bundle pack.",
       data: err.message,
     };
     return new Response(JSON.stringify(responseData), {
@@ -37,21 +37,19 @@ export async function getClientByVisa_cont(req) {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Content-Type": "application/json", // Set the content type header to JSON
+        "Content-Type": "application/json",
       },
     });
   }
 }
 
-export async function getClientByPassport_cont(req) {
+export async function GetBundlePacks_cont(req) {
   try {
-    const { passport } = await req.json();
-
-    const res = await GetClientByPassport_db(passport);
+    const res = await GetBundlePacks_db();
 
     const responseData = {
       ok: true,
-      message: "Client Get successfully.",
+      message: "Bundle packs retrieved successfully.",
       data: res,
     };
 
@@ -67,30 +65,71 @@ export async function getClientByPassport_cont(req) {
   } catch (err) {
     const responseData = {
       ok: false,
-      message: "Internal Server Error!",
+      message: "Failed to retrieve bundle packs.",
       data: err.message,
     };
+
     return new Response(JSON.stringify(responseData), {
       status: 500,
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Content-Type": "application/json", // Set the content type header to JSON
+        "Content-Type": "application/json",
       },
     });
   }
 }
 
-export async function GetGroup_cont(req) {
+export async function DeleteBundlePack_cont(req) {
   try {
-    const { name } = await req.json();
+    const { id } = await req.json();
 
-    const res = await GetGroup_db(name);
+    const res = await DeleteBundlePack_db(id);
 
     const responseData = {
       ok: true,
-      message: "Client Get successfully.",
+      message: "Bundle pack deleted successfully.",
+      data: id,
+    };
+
+    return new Response(JSON.stringify(responseData), {
+      status: 200,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (err) {
+    const responseData = {
+      ok: false,
+      message: "Failed to delete bundle pack.",
+      data: err.message,
+    };
+
+    return new Response(JSON.stringify(responseData), {
+      status: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        "Content-Type": "application/json",
+      },
+    });
+  }
+}
+
+export async function UpdateBundlePack_cont(req) {
+  try {
+    const {payload} = await req.json();
+
+    const res = await UpdateBundlePack_db(payload?.id, payload);
+
+    const responseData = {
+      ok: true,
+      message: "Bundle pack updated successfully.",
       data: res,
     };
 
@@ -106,16 +145,17 @@ export async function GetGroup_cont(req) {
   } catch (err) {
     const responseData = {
       ok: false,
-      message: "Internal Server Error!",
+      message: "Failed to update bundle pack.",
       data: err.message,
     };
+
     return new Response(JSON.stringify(responseData), {
       status: 500,
       headers: {
         "Access-Control-Allow-Origin": "*",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Content-Type": "application/json", // Set the content type header to JSON
+        "Content-Type": "application/json",
       },
     });
   }

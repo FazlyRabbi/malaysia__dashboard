@@ -1,26 +1,30 @@
 import React from "react";
-import Link from "next/link";
-import { Card, List } from "@material-tailwind/react";
-import logo from "../../img/logo.png";
+import {
+  Card,
+  Typography,
+  List,
+  ListItem,
+  ListItemPrefix,
+  ListItemSuffix,
+  Chip,
+  Accordion,
+  AccordionHeader,
+  AccordionBody,
+} from "@material-tailwind/react";
 
 import {
-  UserGroupIcon,
-  IdentificationIcon,
-  RectangleGroupIcon,
-  ServerStackIcon,
-} from "@heroicons/react/24/outline";
+  PresentationChartBarIcon,
+  ShoppingBagIcon,
+  UserCircleIcon,
+  Cog6ToothIcon,
+  InboxIcon,
+  PowerIcon,
+} from "@heroicons/react/24/solid";
 
-import { HomeIcon } from "@heroicons/react/20/solid";
-
-// import logo from "../../img/white-logo.png";
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { Button } from "@material-tailwind/react";
+import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 
 export default function LeftMenu({ sidebar, closeSidebar }) {
   const [open, setOpen] = React.useState(0);
-
-  const path = usePathname();
 
   const handleOpen = (value) => {
     setOpen(open === value ? 0 : value);
@@ -33,93 +37,264 @@ export default function LeftMenu({ sidebar, closeSidebar }) {
           sidebar ? "left-[0rem] z-50  " : "-left-[100rem]"
         } xl:static xl:left-0  absolute      w-[18rem]  p-5 shadow-xl
          
-         bg-[#2B383F]
-        
         transition-all duration-300 shadow-white-900/5  leftManuHeignt  `}
       >
-        <div className="mb-2 p-4   ">
-          <div className="logo_box cursor-pointer flex justify-center items-center ">
-            <Link href={`/`}>
-              <h1 className="  text-white text-2xl font-bold">myIMMS</h1>
-            </Link>
-          </div>
-          <div className="  w-full  mt-4  border-b border-[#ffffff1a] "></div>
+        <div className="mb-2 p-4">
+          <Typography variant="h5" color="blue-gray">
+            Next TopUp
+          </Typography>
         </div>
+        <List>
+          <Accordion
+            open={open === 1}
+            icon={
+              <ChevronDownIcon
+                strokeWidth={2.5}
+                className={`mx-auto h-4 w-4 transition-transform ${
+                  open === 1 ? "rotate-180" : ""
+                }`}
+              />
+            }
+          >
+            <ListItem className="p-0" selected={open === 1}>
+              <AccordionHeader
+                onClick={() => handleOpen(1)}
+                className="border-b-0 p-3"
+              >
+                <ListItemPrefix>
+                  <PresentationChartBarIcon className="h-5 w-5" />
+                </ListItemPrefix>
+                <Typography color="blue-gray" className="mr-auto font-normal">
+                  Grameenphone
+                </Typography>
+              </AccordionHeader>
+            </ListItem>
+            <AccordionBody className="py-1">
+              <List className="p-0">
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Data Packages
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Minutes Packages
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Bundle Packages
+                </ListItem>
+              </List>
+            </AccordionBody>
+          </Accordion>
 
-        <List className="  space-y-2">
-          <Link href={`/`}>
-            <Button
-              variant="gradient"
-              ripple={false}
-              color="blue"
-              className={`  ${
-                path === "/" ? "" : "bg-none shadow-none  hover:shadow-none"
-              } w-full       text-sm text-left flex items-center gap-3 `}
-            >
-              <HomeIcon className="h-5 selection:w-5 text-white" />
-              Dashboard
-            </Button>
-          </Link>
-          <Link href={`/clients`}>
-            <Button
-              variant="gradient"
-              ripple={false}
-              color="blue"
-              className={`  ${
-                path === "/clients"
-                  ? ""
-                  : "bg-none shadow-none  hover:shadow-none"
-              } w-full       text-sm text-left flex items-center gap-3 `}
-            >
-              <UserGroupIcon className="h-5 w-5 text-white" />
-              Clients
-            </Button>
-          </Link>
-          <Link href={`/addClient`}>
-            <Button
-              variant="gradient"
-              ripple={false}
-              color="blue"
-              className={`  ${
-                path === "/addClient"
-                  ? ""
-                  : "bg-none shadow-none  hover:shadow-none"
-              } w-full       text-sm text-left flex items-center gap-3 `}
-            >
-              <IdentificationIcon className="h-5 w-5 text-white" />
-              Add Client
-            </Button>
-          </Link>
-          <Link href={`/group`}>
-            <Button
-              variant="gradient"
-              ripple={false}
-              color="blue"
-              className={`  ${
-                path === "/group"
-                  ? ""
-                  : "bg-none shadow-none  hover:shadow-none"
-              } w-full       text-sm text-left flex items-center gap-3 `}
-            >
-              <RectangleGroupIcon className="h-5 w-5 text-white" />
-              Group
-            </Button>
-          </Link>
-          <Link href={`/rekod`}>
-            <Button
-              variant="gradient"
-              ripple={false}
-              color="blue"
-              className={`  ${
-                path === "/rekod"
-                  ? ""
-                  : "bg-none shadow-none  hover:shadow-none"
-              } w-full       text-sm text-left flex items-center gap-3 `}
-            >
-              <ServerStackIcon className="h-5 w-5 text-white" />
-              Rekod
-            </Button>
-          </Link>
+          <Accordion
+            open={open === 2}
+            icon={
+              <ChevronDownIcon
+                strokeWidth={2.5}
+                className={`mx-auto h-4 w-4 transition-transform ${
+                  open === 2 ? "rotate-180" : ""
+                }`}
+              />
+            }
+          >
+            <ListItem className="p-0" selected={open === 2}>
+              <AccordionHeader
+                onClick={() => handleOpen(2)}
+                className="border-b-0 p-3"
+              >
+                <ListItemPrefix>
+                  <ShoppingBagIcon className="h-5 w-5" />
+                </ListItemPrefix>
+                <Typography color="blue-gray" className="mr-auto font-normal">
+                  Banglalink
+                </Typography>
+              </AccordionHeader>
+            </ListItem>
+
+            <AccordionBody className="py-1">
+              <List className="p-0">
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Data Packages
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Minutes Packages
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Bundle Packages
+                </ListItem>
+              </List>
+            </AccordionBody>
+          </Accordion>
+
+          <Accordion
+            open={open === 3}
+            icon={
+              <ChevronDownIcon
+                strokeWidth={2.5}
+                className={`mx-auto h-4 w-4 transition-transform ${
+                  open === 3 ? "rotate-180" : ""
+                }`}
+              />
+            }
+          >
+            <ListItem className="p-0" selected={open === 3}>
+              <AccordionHeader
+                onClick={() => handleOpen(3)}
+                className="border-b-0 p-3"
+              >
+                <ListItemPrefix>
+                  <ShoppingBagIcon className="h-5 w-5" />
+                </ListItemPrefix>
+                <Typography color="blue-gray" className="mr-auto font-normal">
+                  Teletalk
+                </Typography>
+              </AccordionHeader>
+            </ListItem>
+
+            <AccordionBody className="py-1">
+              <List className="p-0">
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Data Packages
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Minutes Packages
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Bundle Packages
+                </ListItem>
+              </List>
+            </AccordionBody>
+          </Accordion>
+
+          <Accordion
+            open={open === 4}
+            icon={
+              <ChevronDownIcon
+                strokeWidth={2.5}
+                className={`mx-auto h-4 w-4 transition-transform ${
+                  open === 4 ? "rotate-180" : ""
+                }`}
+              />
+            }
+          >
+            <ListItem className="p-0" selected={open === 4}>
+              <AccordionHeader
+                onClick={() => handleOpen(4)}
+                className="border-b-0 p-3"
+              >
+                <ListItemPrefix>
+                  <ShoppingBagIcon className="h-5 w-5" />
+                </ListItemPrefix>
+                <Typography color="blue-gray" className="mr-auto font-normal">
+                  Robi
+                </Typography>
+              </AccordionHeader>
+            </ListItem>
+
+            <AccordionBody className="py-1">
+              <List className="p-0">
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Data Packages
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Minutes Packages
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Bundle Packages
+                </ListItem>
+              </List>
+            </AccordionBody>
+          </Accordion>
+
+          <Accordion
+            open={open === 5}
+            icon={
+              <ChevronDownIcon
+                strokeWidth={2.5}
+                className={`mx-auto h-4 w-4 transition-transform ${
+                  open === 5 ? "rotate-180" : ""
+                }`}
+              />
+            }
+          >
+            <ListItem className="p-0" selected={open === 5}>
+              <AccordionHeader
+                onClick={() => handleOpen(5)}
+                className="border-b-0 p-3"
+              >
+                <ListItemPrefix>
+                  <ShoppingBagIcon className="h-5 w-5" />
+                </ListItemPrefix>
+                <Typography color="blue-gray" className="mr-auto font-normal">
+                  Airtel
+                </Typography>
+              </AccordionHeader>
+            </ListItem>
+
+            <AccordionBody className="py-1">
+              <List className="p-0">
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Data Packages
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Minutes Packages
+                </ListItem>
+                <ListItem>
+                  <ListItemPrefix>
+                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                  </ListItemPrefix>
+                  Bundle Packages
+                </ListItem>
+              </List>
+            </AccordionBody>
+          </Accordion>
+
+          <ListItem>
+            <ListItemPrefix>
+              <PowerIcon className="h-5 w-5" />
+            </ListItemPrefix>
+            Log Out
+          </ListItem>
         </List>
       </Card>
 

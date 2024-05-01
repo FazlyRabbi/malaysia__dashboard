@@ -1,19 +1,13 @@
 import { createEdgeRouter } from "next-connect";
-
-import {
-  CreateClient_cont,
-  GetClient_cont,
-  UpdateClient_cont,
-  DeleteClient_cont,
-} from "../../controllers/Client.cont";
+import {CreateDataPack_cont, GetDataPack_cont, DeleteDataPack_cont, UpdateDataPack_cont} from "../../controllers/DataPack.cont"
 
 const router = createEdgeRouter();
 
 router
-  .get(GetClient_cont)
-  .post(CreateClient_cont)
-  .put(DeleteClient_cont)
-  .patch(UpdateClient_cont);
+  .get(GetDataPack_cont)
+  .post(CreateDataPack_cont)
+  .put(UpdateDataPack_cont)
+  .patch(DeleteDataPack_cont);
 
 export async function GET(request, ctx) {
   return router.run(request, ctx);

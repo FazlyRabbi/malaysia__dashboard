@@ -1,13 +1,18 @@
 import { createEdgeRouter } from "next-connect";
 import {
-  GetRekod_cont,
-  CreateRekod_cont,
-  DeleteRekod_cont,
-} from "../../controllers/Rekod.cont";
+  CreateBundlePack_cont,
+  GetBundlePacks_cont,
+  DeleteBundlePack_cont,
+  UpdateBundlePack_cont
+} from "../../controllers/bundlePack.cont.js";
 
 const router = createEdgeRouter();
 
-router.get(GetRekod_cont).post(CreateRekod_cont).put(DeleteRekod_cont);
+router
+  .get(GetBundlePacks_cont)
+  .post(CreateBundlePack_cont)
+  .put(UpdateBundlePack_cont)
+  .patch(DeleteBundlePack_cont);
 
 export async function GET(request, ctx) {
   return router.run(request, ctx);
