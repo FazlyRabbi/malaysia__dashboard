@@ -37,7 +37,24 @@ model BundlePack {
   validity     String
 }
 
+model User {
+  id       Int     @id @default(autoincrement())
+  name     String
+  phone    String  @unique
+  password String
+  image    String?
+  token    String?
+  role     String  @default("client")
+}
 
+model Order {
+  id       Int    @id @default(autoincrement())
+  offer    String
+  phone    String @unique
+  division String
+  status   String @default("pending")
+  price    String
+}
 
 // model Client {
 //  id Int @id @default(autoincrement())

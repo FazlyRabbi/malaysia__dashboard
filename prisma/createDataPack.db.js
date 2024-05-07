@@ -24,15 +24,15 @@ export async function GetDataPack_db() {
     //   },
     // },
     orderBy: {
-      id: "asc", // 'asc' for ascending order, 'desc' for descending order
+      id: "desc", // 'asc' for ascending order, 'desc' for descending order
     },
   });
   return records;
 }
 
 export async function DeleteDataPack_db(dataPackId) {
-
   const id = parseInt(dataPackId);
+
 
   const response = await prisma.DataPack.delete({
     where: {

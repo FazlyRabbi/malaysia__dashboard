@@ -12,6 +12,10 @@ import {
   AccordionBody,
 } from "@material-tailwind/react";
 
+
+import { FaCommentDollar } from "react-icons/fa6";
+
+
 import {
   PresentationChartBarIcon,
   ShoppingBagIcon,
@@ -22,6 +26,7 @@ import {
 } from "@heroicons/react/24/solid";
 
 import { ChevronRightIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 export default function LeftMenu({ sidebar, closeSidebar }) {
   const [open, setOpen] = React.useState(0);
@@ -45,6 +50,15 @@ export default function LeftMenu({ sidebar, closeSidebar }) {
           </Typography>
         </div>
         <List>
+          <Link href={`/orders`} className=" w-full block">
+            <ListItem>
+              <ListItemPrefix>
+                <FaCommentDollar  className="h-5 w-5" />
+              </ListItemPrefix>
+              Orders
+            </ListItem>
+          </Link>
+
           <Accordion
             open={open === 1}
             icon={
@@ -64,19 +78,24 @@ export default function LeftMenu({ sidebar, closeSidebar }) {
                 <ListItemPrefix>
                   <PresentationChartBarIcon className="h-5 w-5" />
                 </ListItemPrefix>
+
                 <Typography color="blue-gray" className="mr-auto font-normal">
                   Grameenphone
                 </Typography>
               </AccordionHeader>
             </ListItem>
+
             <AccordionBody className="py-1">
               <List className="p-0">
-                <ListItem>
-                  <ListItemPrefix>
-                    <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
-                  </ListItemPrefix>
-                  Data Packages
-                </ListItem>
+                <Link href={`/gp/dataPack`}>
+                  <ListItem>
+                    <ListItemPrefix>
+                      <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
+                    </ListItemPrefix>
+                    Data Packages
+                  </ListItem>
+                </Link>
+
                 <ListItem>
                   <ListItemPrefix>
                     <ChevronRightIcon strokeWidth={3} className="h-3 w-5" />
@@ -288,13 +307,6 @@ export default function LeftMenu({ sidebar, closeSidebar }) {
               </List>
             </AccordionBody>
           </Accordion>
-
-          <ListItem>
-            <ListItemPrefix>
-              <PowerIcon className="h-5 w-5" />
-            </ListItemPrefix>
-            Log Out
-          </ListItem>
         </List>
       </Card>
 

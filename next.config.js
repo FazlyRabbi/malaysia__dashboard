@@ -3,11 +3,10 @@
 const removeImports = require("next-remove-imports")();
 
 const nextConfig = removeImports({
-  
   cors: {
     allowedHeaders: ["*"],
-    allowedOrigins: ["http://localhost:3000","https://lively-custard-023a34.netlify.app","*"],
-    allowedMethods: ["GET", "POST", "PUT", "PATCH","DELETE" ],
+    allowedOrigins: ["http://localhost:3000", "*", "http://localhost:3001"],
+    allowedMethods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
   },
 
   async headers() {

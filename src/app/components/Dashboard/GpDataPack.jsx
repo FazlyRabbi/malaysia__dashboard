@@ -17,6 +17,7 @@ import LeftMenu from "./LeftMenu";
 import DataTable from "react-data-table-component";
 import { HiMenuAlt1 } from "react-icons/hi";
 import { TiDeleteOutline } from "react-icons/ti";
+
 // import useStore from "../../store/store";
 import useSWR, { mutate } from "swr";
 import JsonToCsv from "react-json-to-csv";
@@ -25,7 +26,7 @@ import axios from "axios";
 import useSweetAlert from "../lib/useSweetAlert";
 
 let init = {
-  oparetor: "",
+  oparetor: "Grameenphone",
   pack: "",
   discount: "",
   todayPrice: "",
@@ -35,46 +36,42 @@ let init = {
 
 export default function GpDataPack() {
   const [data, setData] = useState(init);
-
   const [showAddDataPack, setShowAddDataPack] = useState(false);
-
-  const [dataPacks, setDataPacks] = useState(null);
-
-  const [sowClient, setSowClient] = useState(false);
-
+  const [dataPack, setDataPack] = useState(null);
+  const [sowDataPack, setSowDataPack] = useState(false);
   const { showAlert } = useSweetAlert();
   // // const { data, setData } = useStore(init);
-
   const [singleClintData, setSingleClientData] = useState(null);
   const [sidebar, setSidebar] = useState(false);
   const [edit, setEdit] = useState(null);
   const [editState, setEditState] = useState(false);
   const [loading, setLoading] = useState(false);
-
   // // leoad search
   const [search, setSearch] = useState("");
   // // set filtered members
   const [filtered, setFiltered] = useState([]);
 
-  const [groups, setGroups] = useState([]);
-  const [rekods, setRekods] = useState([]);
-
-
   useEffect(() => {
     const fetchDataPack = async () => {
       try {
-        const response = await axios.get('/api/datapack');
-
-         console.log(response);
-        setUsers(response.data);
+        const response = await axios.get("/api/datapack");
+        setDataPack(response?.data?.data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
     fetchDataPack();
   }, []);
 
+  const refetchDataPack = async () => {
+    try {
+      const response = await axios.get("/api/datapack");
+      setDataPack(response?.data?.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
 
   // const downloadCsv = () => {
   //   // Create a blob from the response data
@@ -95,16 +92,15 @@ export default function GpDataPack() {
   //   document.body.removeChild(link);
   // };
 
-
-
-  // useEffect(() => {
-
-    
-  //   const result = dataPack?.filter((data) =>
-  //     data?.oparetor?.toLowerCase().match(search.toLowerCase())
-  //   );
-  //   setFiltered(result);
-  // }, [search, dataPack]);
+  useEffect(() => {
+    if (dataPack) {
+      const result = dataPack?.filter((data) =>
+        data?.oparetor?.toLowerCase().match(search.toLowerCase())
+      );
+      setFiltered(result);
+      return;
+    }
+  }, [search, dataPack]);
 
   const handleDelete = async (id) => {
     showAlert({
@@ -116,15 +112,15 @@ export default function GpDataPack() {
     }).then(async (result) => {
       if (!result?.isConfirmed) return;
 
-      const res = await axios.put(`/api/client`, {
+      const res = await axios.patch(`/api/datapack`, {
         id: id,
       });
       if (!res.data.ok) return;
-      handleRefetch();
+      refetchDataPack();
       // refetch();
       showAlert({
         icon: "success",
-        title: "Client Successfully Deleted!",
+        title: "Data Pack Successfully Deleted!",
         showConfirmButton: false,
         timer: 1000,
       });
@@ -139,25 +135,27 @@ export default function GpDataPack() {
   const handleMainEdit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const { group, record, ...newObject } = edit;
     try {
-      const response = await axios.patch(`/api/client`, newObject);
+      const response = await axios.put(`/api/datapack`, {
+        payload: {
+          ...edit,
+        },
+      });
 
       if (response.data.ok) {
         setTimeout(() => {
           // Show the SweetAlert after the delay
           showAlert({
             icon: "success",
-            title: "Client Edit Successfull!",
+            title: "DataPack Edit Successfull!",
             showConfirmButton: false,
             timer: 1000,
           });
         }, 1500);
-
-        setLoading(false);
         setEditState(false);
+        setLoading(false);
         setEdit(null);
-        handleRefetch();
+        refetchDataPack();
         return;
       }
 
@@ -197,7 +195,7 @@ export default function GpDataPack() {
             timer: 1000,
           });
         }, 1500);
-
+        setShowAddDataPack(false);
         setLoading(false);
         setData(init);
         setDataPack(false);
@@ -233,33 +231,33 @@ export default function GpDataPack() {
       sortable: true,
     },
     {
-      name: "Tarikh Permohonan",
-      selector: (row) => row.date,
+      name: "Oparetor",
+      selector: (row) => row.oparetor,
       sortable: true,
     },
     {
-      name: "Nombor Permohonan",
-      selector: (row) => row.visa,
+      name: "Package",
+      selector: (row) => row.pack,
       sortable: true,
     },
     {
-      name: "Nama Pemohon",
-      selector: (row) => row.fullName,
+      name: "Discount",
+      selector: (row) => row.discount,
       sortable: true,
     },
     {
-      name: "Warganegara",
-      selector: (row) => row.country,
+      name: "Today Price",
+      selector: (row) => row.todayPrice,
       sortable: true,
     },
     {
-      name: "No Dokumen	",
-      selector: (row) => row.passport,
+      name: "Offical Price",
+      selector: (row) => row.officalPrice,
       sortable: true,
     },
     {
-      name: "Status Permohonan",
-      selector: (row) => row.status,
+      name: "Validity",
+      selector: (row) => row.validity,
       sortable: true,
     },
 
@@ -313,7 +311,7 @@ export default function GpDataPack() {
   };
 
   const handleViewClient = (data) => {
-    setSowClient(true);
+    setSowDataPack(true);
     setSingleClientData(data);
   };
 
@@ -345,7 +343,7 @@ export default function GpDataPack() {
 
           <Card className="  py-4 shadow-md  pl-10   ]">
             {/* form */}
-            <Button onClick={() => setDataPack(true)} color="purple">
+            <Button onClick={() => setShowAddDataPack(true)} color="purple">
               Add Data Pack
             </Button>
             ;{/* ========================== */}
@@ -422,7 +420,7 @@ export default function GpDataPack() {
                     setData({ ...data, oparetor: e.target.value })
                   }
                   size="lg"
-                  disabled={loading}
+                  disabled
                   placeholder="oparetor"
                   className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
                   labelProps={{
@@ -550,146 +548,124 @@ export default function GpDataPack() {
       {/* ==================Add================ */}
 
       {/* ==================Show================ */}
-      <Dialog open={sowClient}>
+      <Dialog open={sowDataPack}>
         <DialogHeader className="  flex justify-end">
           <TiDeleteOutline
             className=" text-[1.5rem]   cursor-pointer"
-            onClick={() => setSowClient(false)}
+            onClick={() => setSowDataPack(false)}
           />
         </DialogHeader>
         <DialogBody className=" lg:w-full pb-10">
-          <div
-            // key={index}
-            className="
-                  
+          <form onSubmit={handleSubmit}>
+            <div
+              // key={index}
+              className="
                    gap-y-10
-                
                    p-3 py-4 rounded-sm
-                  justify-items-center
+                 justify-center  gap-x-6  justify-items-center
                 grid grid-cols-1 md:grid-cols-2  xl:grid-cols-3"
-          >
-            <div>
-              <Typography variant="h6" color="blue-gray" className="-mb-3">
-                Tarikh Permohonan
-              </Typography>
-              <Input
-                value={singleClintData?.date}
-                disabled
-                size="lg"
-                placeholder="passport"
-                className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-              />
-            </div>
-            <div>
-              <Typography variant="h6" color="blue-gray" className="-mb-3">
-                Nombor Permohonan
-              </Typography>
-              <Input
-                value={singleClintData?.visa}
-                disabled
-                size="lg"
-                placeholder="passport"
-                className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-              />
-            </div>
-            <div>
-              <Typography variant="h6" color="blue-gray" className="-mb-3">
-                Nama Pemohon
-              </Typography>
-              <Input
-                value={singleClintData?.fullName}
-                disabled
-                size="lg"
-                placeholder="passport"
-                className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-              />
-            </div>
-            <div>
-              <Typography variant="h6" color="blue-gray" className="-mb-3">
-                Warganegara
-              </Typography>
-              <Input
-                value={singleClintData?.country}
-                disabled
-                size="lg"
-                placeholder="passport"
-                className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-              />
-            </div>
-            <div>
-              <Typography variant="h6" color="blue-gray" className="-mb-3">
-                No Dokumen
-              </Typography>
-              <Input
-                value={singleClintData?.passport}
-                disabled
-                size="lg"
-                placeholder="passport"
-                className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-              />
-            </div>
-            <div>
-              <Typography variant="h6" color="blue-gray" className="-mb-3">
-                Status Permohonan
-              </Typography>
-              <Input
-                value={singleClintData?.status}
-                disabled
-                size="lg"
-                placeholder="passport"
-                className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-              />
-            </div>
-            <div>
-              <Typography variant="h6" color="blue-gray" className="-mb-3">
-                Group
-              </Typography>
+            >
+              <div className=" w-full">
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Oparetor
+                </Typography>
+                <Input
+                  value={singleClintData?.oparetor}
+                  size="lg"
+                  disabled
+                  placeholder="oparetor"
+                  className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                />
+              </div>
 
-              <Input
-                value={singleClintData?.group?.name}
-                disabled
-                size="lg"
-                placeholder="group"
-                className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-              />
+              <div className=" w-full">
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Package
+                </Typography>
+                <Input
+                  value={singleClintData?.pack}
+                  size="lg"
+                  disabled
+                  placeholder="pack"
+                  className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                />
+              </div>
+
+              <div className=" w-full">
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Discount
+                </Typography>
+
+                <Input
+                  value={singleClintData?.discount}
+                  size="lg"
+                  disabled
+                  placeholder="discount"
+                  className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                />
+              </div>
+
+              <div className=" w-full">
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Today&apos;s Price
+                </Typography>
+
+                <Input
+                  value={singleClintData?.todayPrice}
+                  size="lg"
+                  disabled
+                  placeholder="discount"
+                  className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                />
+              </div>
+
+              <div className=" w-full">
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Offical Price
+                </Typography>
+
+                <Input
+                  value={singleClintData?.officalPrice}
+                  size="lg"
+                  disabled
+                  placeholder="discount"
+                  className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                />
+              </div>
+
+              <div className=" w-full">
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Validity
+                </Typography>
+
+                <Input
+                  value={singleClintData?.validity}
+                  size="lg"
+                  disabled
+                  placeholder="discount"
+                  className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                />
+              </div>
             </div>
-            <div>
-              <Typography variant="h6" color="blue-gray" className="-mb-3">
-                Rekod
-              </Typography>
-              <Input
-                value={singleClintData?.record?.content}
-                disabled
-                size="lg"
-                placeholder="rekod"
-                className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
-                labelProps={{
-                  className: "before:content-none after:content-none",
-                }}
-              />
-            </div>
-          </div>
+          </form>
         </DialogBody>
       </Dialog>
       {/* ==================Show================ */}
@@ -702,102 +678,30 @@ export default function GpDataPack() {
             onClick={() => setEditState(false)}
           />
         </DialogHeader>
-        <form onSubmit={handleMainEdit}>
-          <DialogBody className=" lg:w-full pb-10">
+        <DialogBody className=" lg:w-full pb-10">
+          <form onSubmit={handleMainEdit}>
             <div
+              // key={index}
               className="
-                  
-                   gap-10
-                
+                   gap-y-10
                    p-3 py-4 rounded-sm
-                  justify-items-center
-                grid grid-cols-2  xl:grid-cols-3"
+                 justify-center  gap-x-6  justify-items-center
+                grid grid-cols-1 md:grid-cols-2  xl:grid-cols-3"
             >
-              <div className="w-full">
+              <div className=" w-full">
                 <Typography variant="h6" color="blue-gray" className="-mb-3">
-                  Tarikh Permohonan
+                  Oparetor
                 </Typography>
+
                 <Input
                   required
-                  disabled={loading}
-                  onChange={(e) => setEdit({ ...edit, date: e.target.value })}
-                  value={edit?.date}
-                  size="lg"
-                  placeholder="date"
-                  className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
-                  labelProps={{
-                    className: "before:content-none after:content-none",
-                  }}
-                />
-              </div>
-              <div className="w-full">
-                <Typography variant="h6" color="blue-gray" className="-mb-3">
-                  Nombor Permohonan
-                </Typography>
-                <Input
-                  required
-                  disabled={loading}
-                  onChange={(e) => setEdit({ ...edit, visa: e.target.value })}
-                  value={edit?.visa}
-                  size="lg"
-                  placeholder="visa"
-                  className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
-                  labelProps={{
-                    className: "before:content-none after:content-none",
-                  }}
-                />
-              </div>
-              <div className="w-full">
-                <Typography variant="h6" color="blue-gray" className="-mb-3">
-                  Nama Pemohon
-                </Typography>
-                <Input
-                  disabled={loading}
+                  value={edit?.oparetor}
                   onChange={(e) =>
-                    setEdit({ ...edit, fullName: e.target.value })
+                    setEdit({ ...edit, oparetor: e.target.value })
                   }
-                  required
-                  value={edit?.fullName}
                   size="lg"
-                  placeholder="fullName"
-                  className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
-                  labelProps={{
-                    className: "before:content-none after:content-none",
-                  }}
-                />
-              </div>
-              <div className="w-full">
-                <Typography variant="h6" color="blue-gray" className="-mb-3">
-                  Warganegara
-                </Typography>
-                <Input
-                  disabled={loading}
-                  onChange={(e) =>
-                    setEdit({ ...edit, country: e.target.value })
-                  }
-                  required
-                  value={edit?.country}
-                  size="lg"
-                  placeholder="country"
-                  className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
-                  labelProps={{
-                    className: "before:content-none after:content-none",
-                  }}
-                />
-              </div>
-              <div className="w-full">
-                <Typography variant="h6" color="blue-gray" className="-mb-3">
-                  No Dokumen
-                </Typography>
-                <Input
-                  disabled={loading}
-                  required
-                  onChange={(e) =>
-                    setEdit({ ...edit, passport: e.target.value })
-                  }
-                  value={edit?.passport}
-                  size="lg"
-                  placeholder="passport"
+                  disabled
+                  placeholder="oparetor"
                   className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
                   labelProps={{
                     className: "before:content-none after:content-none",
@@ -805,83 +709,121 @@ export default function GpDataPack() {
                 />
               </div>
 
-              <div className="w-full">
+              <div className=" w-full">
                 <Typography variant="h6" color="blue-gray" className="-mb-3">
-                  Status Permohonan
+                  Package
                 </Typography>
-                <select
+
+                <Input
+                  required
+                  value={edit?.pack}
+                  onChange={(e) => setEdit({ ...edit, pack: e.target.value })}
+                  size="lg"
                   disabled={loading}
-                  onChange={(e) => setEdit({ ...edit, status: e.target.value })}
-                  value={edit?.status}
-                  className=" border w-full  mt-4 p-2 space-y-3 rounded-md border-gray-500"
-                >
-                  <option>LULUS</option>
-                  <option>BARU</option>
-                  <option>BAYER</option>
-                  <option>BATAL</option>
-                  <option>CETAK</option>
-                  <option>CENCEL</option>
-                </select>
+                  placeholder="pack"
+                  className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                />
+              </div>
+
+              <div className=" w-full">
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Discount
+                </Typography>
+
+                <Input
+                  required
+                  value={edit?.discount}
+                  onChange={(e) =>
+                    setEdit({ ...edit, discount: e.target.value })
+                  }
+                  size="lg"
+                  disabled={loading}
+                  placeholder="discount"
+                  className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                />
+              </div>
+
+              <div className=" w-full">
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Today&apos;s Price
+                </Typography>
+
+                <Input
+                  required
+                  value={edit?.todayPrice}
+                  onChange={(e) =>
+                    setEdit({ ...edit, todayPrice: e.target.value })
+                  }
+                  size="lg"
+                  disabled={loading}
+                  placeholder="today's Price"
+                  className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                />
+              </div>
+
+              <div className=" w-full">
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Offical Price
+                </Typography>
+
+                <Input
+                  required
+                  value={edit?.officalPrice}
+                  onChange={(e) =>
+                    setEdit({ ...edit, officalPrice: e.target.value })
+                  }
+                  size="lg"
+                  disabled={loading}
+                  placeholder="offical price"
+                  className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                />
+              </div>
+
+              <div className=" w-full">
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Validity
+                </Typography>
+
+                <Input
+                  required
+                  value={edit?.validity}
+                  onChange={(e) =>
+                    setEdit({ ...edit, validity: e.target.value })
+                  }
+                  size="lg"
+                  disabled={loading}
+                  placeholder="validity"
+                  className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                />
               </div>
             </div>
 
-            <div
-              className="  gap-10
-                
-              
-                p-3 py-4 rounded-sm
-              
-             grid grid-cols-1 md:grid-cols-2  xl:grid-cols-2 "
-            >
-              <div>
-                <Typography variant="h6" color="blue-gray" className="-mb-3">
-                  Group
-                </Typography>
-                <select
-                  disabled={loading}
-                  onChange={(e) =>
-                    setEdit({ ...edit, groupId: parseInt(e.target.value) })
-                  }
-                  className=" border w-full mt-4 p-2 space-y-3 rounded-md border-gray-500"
-                >
-                  {groups?.map((name, index) => (
-                    <option value={name.id} key={index}>
-                      {name.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <Typography variant="h6" color="blue-gray" className="-mb-3">
-                  Rekod
-                </Typography>
-                <select
-                  disabled={loading}
-                  onChange={(e) =>
-                    setEdit({ ...edit, recordId: parseInt(e.target.value) })
-                  }
-                  className=" border w-full mt-4 p-2 space-y-3 rounded-md border-gray-500"
-                >
-                  {rekods?.map((name, index) => (
-                    <option value={name.id} key={index}>
-                      {name.content}
-                    </option>
-                  ))}
-                </select>
-              </div>
+            <div className=" flex w-full justify-center items-center">
+              <Button
+                disabled={loading}
+                type="submit"
+                className="mt-10 bg-purple-600 flex w-[15rem] justify-center"
+              >
+                {loading ? <Spinner /> : "Update"}
+              </Button>
             </div>
-
-            <Button
-              disabled={loading}
-              type="submit"
-              className="mt-10 flex justify-center"
-              fullWidth
-            >
-              {loading ? <Spinner /> : "Update"}
-            </Button>
-          </DialogBody>
-        </form>
+          </form>
+        </DialogBody>
       </Dialog>
       {/* ==================Edit================= */}
     </div>
