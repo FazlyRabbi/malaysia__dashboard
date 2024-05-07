@@ -12,9 +12,7 @@ import {
   AccordionBody,
 } from "@material-tailwind/react";
 
-
 import { FaCommentDollar } from "react-icons/fa6";
-
 
 import {
   PresentationChartBarIcon,
@@ -45,15 +43,17 @@ export default function LeftMenu({ sidebar, closeSidebar }) {
         transition-all duration-300 shadow-white-900/5  leftManuHeignt  `}
       >
         <div className="mb-2 p-4">
-          <Typography variant="h5" color="blue-gray">
-            Next TopUp
-          </Typography>
+          <Link href={`/`}>
+            <Typography variant="h5" color="blue-gray">
+              Next TopUp
+            </Typography>
+          </Link>
         </div>
         <List>
           <Link href={`/orders`} className=" w-full block">
             <ListItem>
               <ListItemPrefix>
-                <FaCommentDollar  className="h-5 w-5" />
+                <FaCommentDollar className="h-5 w-5" />
               </ListItemPrefix>
               Orders
             </ListItem>

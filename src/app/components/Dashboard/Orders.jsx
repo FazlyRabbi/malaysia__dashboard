@@ -7,11 +7,8 @@ import {
   DialogBody,
   DialogHeader,
   Input,
-  Spinner,
-  Button,
   Textarea,
   Typography,
-  Checkbox,
 } from "@material-tailwind/react";
 // import leftmenu
 import LeftMenu from "./LeftMenu";
@@ -211,6 +208,11 @@ export default function Orders() {
       selector: (row) => `${row.phone}`,
       sortable: true,
     },
+    {
+      name: "Division",
+      selector: (row) => `${row.division}`,
+      sortable: true,
+    },
 
     {
       name: "Price",
@@ -386,6 +388,21 @@ export default function Orders() {
                   }}
                 />
               </div>
+              <div className=" w-full">
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Division
+                </Typography>
+                <Input
+                  value={singleClintData?.division}
+                  size="lg"
+                  disabled
+                  placeholder="phone"
+                  className=" !border-t-blue-gray-200 mt-4  w-full focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                />
+              </div>
 
               <div className=" w-full">
                 <Typography variant="h6" color="blue-gray" className="-mb-3">
@@ -420,7 +437,6 @@ export default function Orders() {
                   }}
                 />
               </div>
-
               <div className=" w-full md:col-span-2">
                 <Typography variant="h6" color="blue-gray" className="-mb-3">
                   Offer
