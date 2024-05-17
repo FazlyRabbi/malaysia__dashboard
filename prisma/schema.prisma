@@ -43,7 +43,7 @@ model User {
   phone    String  @unique
   password String
   image    String?
-  token    String?
+  token    String? @default("0")
   role     String  @default("client")
 }
 
@@ -54,6 +54,19 @@ model Order {
   division String
   status   String @default("pending")
   price    String
+}
+
+model Payment {
+  id                    Int     @id @default(autoincrement())
+  user                  String
+  paymentID             String?
+  payerReference        String?
+  customerMsisdn        String?
+  trxID                 String?
+  amount                String?
+  statusMessage         String?
+  paymentExecuteTime    String?
+  merchantInvoiceNumber String?
 }
 
 // model Client {

@@ -1,11 +1,19 @@
 import { createEdgeRouter } from "next-connect";
 
-
-import { Register_cont, Login_cont } from "../../controllers/register";
+import {
+  CreatePayment_cont,
+  UpdatePayment_cont,
+  DeletePayment_cont,
+  GetPayments_cont,
+} from "../../controllers/payment.cont";
 
 const router = createEdgeRouter();
 
-router.post(Register_cont).patch(Login_cont);
+router
+  .get(GetPayments_cont)
+  .post(CreatePayment_cont)
+  .put(UpdatePayment_cont)
+  .patch(DeletePayment_cont);
 
 export async function GET(request, ctx) {
   return router.run(request, ctx);
