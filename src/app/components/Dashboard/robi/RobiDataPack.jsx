@@ -12,21 +12,18 @@ import {
   Typography,
 } from "@material-tailwind/react";
 // import leftmenu
-import LeftMenu from "./LeftMenu";
+import LeftMenu from "../LeftMenu";
 // import useSweetAlert from "@/components/lib/sweetalert2";
 import DataTable from "react-data-table-component";
 import { HiMenuAlt1 } from "react-icons/hi";
 import { TiDeleteOutline } from "react-icons/ti";
 
-// import useStore from "../../store/store";
-import useSWR, { mutate } from "swr";
-import JsonToCsv from "react-json-to-csv";
 
 import axios from "axios";
-import useSweetAlert from "../lib/useSweetAlert";
+import useSweetAlert from "../../lib/useSweetAlert";
 
 let init = {
-  oparetor: "Grameenphone",
+  oparetor: "Robi",
   pack: "",
   discount: "",
   todayPrice: "",
@@ -34,7 +31,7 @@ let init = {
   validity: "",
 };
 
-export default function GpDataPack() {
+export default function RobiDataPack() {
   const [data, setData] = useState(init);
   const [showAddDataPack, setShowAddDataPack] = useState(false);
   const [dataPack, setDataPack] = useState(null);
@@ -75,9 +72,7 @@ export default function GpDataPack() {
 
   useEffect(() => {
     if (dataPack) {
-      const gpData = dataPack.filter(
-        (data) => data?.oparetor === "Grameenphone"
-      );
+      const gpData = dataPack.filter((data) => data?.oparetor === "Robi");
 
       const result = gpData?.filter((data) =>
         data?.oparetor?.toLowerCase().match(search.toLowerCase())
@@ -315,7 +310,7 @@ export default function GpDataPack() {
           {/* header */}
           <div className="  bg-white flex items-center  px-10 justify-between  h-[5rem] cutstomShad  w-full  mb-8">
             <h1 className=" uppercase  text-[#223354] font-bold">
-              Grameenphone Data Packs
+              Robi Data Packs
             </h1>
             <div>
               <HiMenuAlt1

@@ -26,7 +26,7 @@ import axios from "axios";
 import useSweetAlert from "../lib/useSweetAlert";
 
 let init = {
-  oparetor: "Grameenphone",
+  oparetor: "Banglalink",
   pack: "",
   discount: "",
   todayPrice: "",
@@ -34,7 +34,7 @@ let init = {
   validity: "",
 };
 
-export default function GpDataPack() {
+export default function BLDataPack() {
   const [data, setData] = useState(init);
   const [showAddDataPack, setShowAddDataPack] = useState(false);
   const [dataPack, setDataPack] = useState(null);
@@ -75,11 +75,9 @@ export default function GpDataPack() {
 
   useEffect(() => {
     if (dataPack) {
-      const gpData = dataPack.filter(
-        (data) => data?.oparetor === "Grameenphone"
-      );
+      const blData = dataPack.filter((data) => data?.oparetor === "Banglalink");
 
-      const result = gpData?.filter((data) =>
+      const result = blData?.filter((data) =>
         data?.oparetor?.toLowerCase().match(search.toLowerCase())
       );
       setFiltered(result);

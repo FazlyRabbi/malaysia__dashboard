@@ -34,13 +34,13 @@ let init = {
   validity: "",
 };
 
-export default function GpDataPack() {
+export default function GpBundlePack() {
   const [data, setData] = useState(init);
-  const [showAddDataPack, setShowAddDataPack] = useState(false);
-  const [dataPack, setDataPack] = useState(null);
-  const [sowDataPack, setSowDataPack] = useState(false);
+  const [showAddBundlePack, setShowAddBundlePack] = useState(false);
+  const [bundlePackData, setBundlePackData] = useState(null);
+  const [showBundlePack, setShowBundlePack] = useState(false);
   const { showAlert } = useSweetAlert();
-  // // const { data, setData } = useStore(init);
+  // // const { bundlePack, setBundlePack } = useStore(init);
   const [singleClintData, setSingleClientData] = useState(null);
   const [sidebar, setSidebar] = useState(false);
   const [edit, setEdit] = useState(null);
@@ -52,40 +52,41 @@ export default function GpDataPack() {
   const [filtered, setFiltered] = useState([]);
 
   useEffect(() => {
-    const fetchDataPack = async () => {
+    const fetchBundlePack = async () => {
       try {
-        const response = await axios.get("/api/datapack");
-        setDataPack(response?.data?.data);
+        const response = await axios.get("/api/bundlepack");
+        setBundlePackData(response?.data?.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
-    fetchDataPack();
+    fetchBundlePack();
   }, []);
 
-  const refetchDataPack = async () => {
+  const refetchBundlePack = async () => {
     try {
-      const response = await axios.get("/api/datapack");
-      setDataPack(response?.data?.data);
+      const response = await axios.get("/api/bundlepack");
+      setBundlePackData(response?.data?.data);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
-    if (dataPack) {
-      const gpData = dataPack.filter(
+    if (bundlePackData) {
+      const gpData = bundlePackData.filter(
         (data) => data?.oparetor === "Grameenphone"
       );
 
       const result = gpData?.filter((data) =>
-        data?.oparetor?.toLowerCase().match(search.toLowerCase())
+        data?.pack?.toLowerCase().match(search.toLowerCase())
       );
       setFiltered(result);
+
       return;
     }
-  }, [search, dataPack]);
+  }, [search, bundlePackData]);
 
   const handleDelete = async (id) => {
     showAlert({
@@ -97,15 +98,15 @@ export default function GpDataPack() {
     }).then(async (result) => {
       if (!result?.isConfirmed) return;
 
-      const res = await axios.patch(`/api/datapack`, {
+      const res = await axios.patch(`/api/bundlepack`, {
         id: id,
       });
       if (!res.data.ok) return;
-      refetchDataPack();
+      refetchBundlePack();
       // refetch();
       showAlert({
         icon: "success",
-        title: "Data Pack Successfully Deleted!",
+        title: "Bundle Pack Successfully Deleted!",
         showConfirmButton: false,
         timer: 1000,
       });
@@ -121,7 +122,7 @@ export default function GpDataPack() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.put(`/api/datapack`, {
+      const response = await axios.put(`/api/bundlepack`, {
         payload: {
           ...edit,
         },
@@ -132,7 +133,7 @@ export default function GpDataPack() {
           // Show the SweetAlert after the delay
           showAlert({
             icon: "success",
-            title: "DataPack Edit Successfull!",
+            title: "Bundle Pack Edit Successful!",
             showConfirmButton: false,
             timer: 1000,
           });
@@ -140,7 +141,7 @@ export default function GpDataPack() {
         setEditState(false);
         setLoading(false);
         setEdit(null);
-        refetchDataPack();
+        refetchBundlePack();
         return;
       }
 
@@ -168,22 +169,22 @@ export default function GpDataPack() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post(`/api/datapack`, data);
+      const response = await axios.post(`/api/bundlepack`, data);
 
       if (response.data.ok) {
         setTimeout(() => {
           // Show the SweetAlert after the delay
           showAlert({
             icon: "success",
-            title: "DataPack Successfuly Added!",
+            title: "Bundle Pack Successfully Added!",
             showConfirmButton: false,
             timer: 1000,
           });
         }, 1500);
-        setShowAddDataPack(false);
+        setShowAddBundlePack(false);
         setLoading(false);
         setData(init);
-        setDataPack(false);
+        setBundlePackData(false);
         // handleRefetch();
         return;
       }
@@ -216,7 +217,7 @@ export default function GpDataPack() {
       sortable: true,
     },
     {
-      name: "Oparetor",
+      name: "Operator",
       selector: (row) => row.oparetor,
       sortable: true,
     },
@@ -236,7 +237,7 @@ export default function GpDataPack() {
       sortable: true,
     },
     {
-      name: "Offical Price",
+      name: "Official Price",
       selector: (row) => row.officalPrice,
       sortable: true,
     },
@@ -296,7 +297,7 @@ export default function GpDataPack() {
   };
 
   const handleViewClient = (data) => {
-    setSowDataPack(true);
+    setShowBundlePack(true);
     setSingleClientData(data);
   };
 
@@ -315,37 +316,32 @@ export default function GpDataPack() {
           {/* header */}
           <div className="  bg-white flex items-center  px-10 justify-between  h-[5rem] cutstomShad  w-full  mb-8">
             <h1 className=" uppercase  text-[#223354] font-bold">
-              Grameenphone Data Packs
+              Grameenphone Bundle Packs
             </h1>
             <div>
               <HiMenuAlt1
-                className=" xl:hidden  text-[1.5rem] cursor-pointer"
+                className=" xl:hidden text-[1.5rem] cursor-pointer"
                 onClick={() => setSidebar(!sidebar)}
               />
             </div>
           </div>
-          {/* ============================= */}
-
-          <Card className="  py-4 shadow-md  pl-10   ]">
-            {/* form */}
-            <Button onClick={() => setShowAddDataPack(true)} color="purple">
-              Add Data Pack
+          <Card className=" py-4 shadow-md pl-10">
+            <Button onClick={() => setShowAddBundlePack(true)} color="purple">
+              Add Bundle Pack
             </Button>
-            {/* ========================== */}
+
             <DataTable
               columns={columns}
               data={filtered}
               selectableRowsHighlight
               highlightOnHover
-              // selectableRows
-              // fixedHeader
               subHeader
               subHeaderComponent={
-                <div className="relative mb-6 mt-4  w-full shadow-sm">
+                <div className=" relative mb-6 mt-4 w-full shadow-sm">
                   <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <svg
                       aria-hidden="true"
-                      className="w-5 h-5 text-[#6B7280] dark:text-gray-400"
+                      className="w-5 h-5 text-[#6B7280]"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -357,16 +353,15 @@ export default function GpDataPack() {
                       />
                     </svg>
                   </div>
-                  <input
+                  <Input
                     id="simple-search"
-                    className="  bg-[#F9FAFB] border  border-softGray text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    className=" bg-[#F9FAFB] border border-softGray text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5"
                     placeholder="Search"
                     onChange={(e) => setSearch(e.target.value)}
                   />
                 </div>
               }
               customStyles={customStyles}
-              subHeaderAlign="center"
               pagination
             />
           </Card>
@@ -374,11 +369,11 @@ export default function GpDataPack() {
       </div>
 
       {/* ==================Add================ */}
-      <Dialog open={showAddDataPack}>
+      <Dialog open={showAddBundlePack}>
         <DialogHeader className="  flex justify-end">
           <TiDeleteOutline
             className=" text-[1.5rem]   cursor-pointer"
-            onClick={() => setShowAddDataPack(false)}
+            onClick={() => setShowAddBundlePack(false)}
           />
         </DialogHeader>
         <DialogBody className=" lg:w-full pb-10">
@@ -533,17 +528,16 @@ export default function GpDataPack() {
       {/* ==================Add================ */}
 
       {/* ==================Show================ */}
-      <Dialog open={sowDataPack}>
+      <Dialog open={showBundlePack}>
         <DialogHeader className="  flex justify-end">
           <TiDeleteOutline
-            className=" text-[1.5rem]   cursor-pointer"
-            onClick={() => setSowDataPack(false)}
+            className=" text-[1.5rem] cursor-pointer"
+            onClick={() => setShowBundlePack(false)}
           />
         </DialogHeader>
         <DialogBody className=" lg:w-full pb-10">
           <form onSubmit={handleSubmit}>
             <div
-              // key={index}
               className="
                    gap-y-10
                    p-3 py-4 rounded-sm
