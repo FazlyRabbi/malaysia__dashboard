@@ -1,18 +1,28 @@
-import {
-  CreateOrder_db,
-  GetOrders_db,
-  UpdateOrder_db,
-  DeleteOrder_db,
-} from "../../../prisma/order.db";
-
-export async function CreateOrder_cont(req) {
+export async function GrantBkashToken_cont(req) {
   try {
-    const data = await req.json();
-    const res = await CreateOrder_db(data);
+    const response = await fetch(`${process.env.BKASH_API_URL}/token/grant`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        username: process.env.BKASH_USERNAME,
+        password: process.env.BKASH_PASSWORD,
+      },
+      body: JSON.stringify({
+        app_key: process.env.APP_KEY,
+        app_secret: process.env.APP_SECRET,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const resData = await response.json();
+
     const responseData = {
       ok: true,
-      message: "🎉অভিনন্দন! আপনার অফারটি সফলভাবে কেনা হয়েছে, অনুগ্রহ করে  একটু অপেক্ষা করুন।",
-      data: res,
+      message: "Token granted successfully.",
+      data: resData,
     };
 
     return new Response(JSON.stringify(responseData), {
@@ -27,7 +37,7 @@ export async function CreateOrder_cont(req) {
   } catch (err) {
     const responseData = {
       ok: false,
-      message: "Failed to create minute pack.",
+      message: "Failed to grant token.",
       data: err.message,
     };
     return new Response(JSON.stringify(responseData), {
@@ -42,14 +52,40 @@ export async function CreateOrder_cont(req) {
   }
 }
 
-export async function GetOrders_cont(req) {
+export async function CreatePayment_cont(req) {
   try {
-    const res = await GetOrders_db();
+    const { token, amount, payer } = await req.json();
+
+    const response = await fetch(`${process.env.BKASH_API_URL}/create`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        username: process.env.BKASH_USERNAME,
+        password: process.env.BKASH_PASSWORD,
+        "X-App-Key": process.env.APP_KEY,
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        mode: "0011",
+        payerReference: payer,
+        callbackURL: process.env.CALLBACK_URL,
+        amount: amount,
+        currency: "BDT",
+        intent: "sale",
+        merchantInvoiceNumber: `invo ${payer}`,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const resData = await response.json();
 
     const responseData = {
       ok: true,
-      message: "Orders retrieved successfully.",
-      data: res,
+      message: "Token granted successfully.",
+      data: resData,
     };
 
     return new Response(JSON.stringify(responseData), {
@@ -64,10 +100,9 @@ export async function GetOrders_cont(req) {
   } catch (err) {
     const responseData = {
       ok: false,
-      message: "Failed to retrieve orders.",
+      message: "Failed to grant token.",
       data: err.message,
     };
-
     return new Response(JSON.stringify(responseData), {
       status: 500,
       headers: {
@@ -80,16 +115,32 @@ export async function GetOrders_cont(req) {
   }
 }
 
-export async function DeleteOrder_cont(req) {
+export async function ExecutePayment_cont(req) {
   try {
-    const { id } = await req.json();
+    const { token, paymentID } = await req.json();
 
-    const res = await DeleteOrder_db(id);
+    const response = await fetch(`${process.env.BKASH_API_URL}/execute`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-App-Key": process.env.APP_KEY,
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        paymentID: paymentID,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const resData = await response.json();
 
     const responseData = {
       ok: true,
-      message: "Order deleted successfully.",
-      data: id,
+      message: "Token granted successfully.",
+      data: resData,
     };
 
     return new Response(JSON.stringify(responseData), {
@@ -104,50 +155,9 @@ export async function DeleteOrder_cont(req) {
   } catch (err) {
     const responseData = {
       ok: false,
-      message: "Failed to delete order.",
+      message: "Failed to grant token.",
       data: err.message,
     };
-
-    return new Response(JSON.stringify(responseData), {
-      status: 500,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Content-Type": "application/json",
-      },
-    });
-  }
-}
-
-export async function UpdateOrder_cont(req) {
-  try {
-    const { payload } = await req.json();
-
-    const res = await UpdateOrder_db(payload?.id, payload);
-
-    const responseData = {
-      ok: true,
-      message: "Order updated successfully.",
-      data: res,
-    };
-
-    return new Response(JSON.stringify(responseData), {
-      status: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers": "Content-Type, Authorization",
-        "Content-Type": "application/json",
-      },
-    });
-  } catch (err) {
-    const responseData = {
-      ok: false,
-      message: "Failed to update order.",
-      data: err.message,
-    };
-
     return new Response(JSON.stringify(responseData), {
       status: 500,
       headers: {

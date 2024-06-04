@@ -1,14 +1,13 @@
 import { createEdgeRouter } from "next-connect";
 
 import {
-  Register_cont,
-  Login_cont,
   GetUserByPhone_cont,
+  UpdateUser_cont,
 } from "../../controllers/register";
 
 const router = createEdgeRouter();
 
-router.post(Register_cont).patch(Login_cont).get(GetUserByPhone_cont);
+router.patch(GetUserByPhone_cont).put(UpdateUser_cont);
 
 export async function GET(request, ctx) {
   return router.run(request, ctx);

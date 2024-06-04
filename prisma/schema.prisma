@@ -48,12 +48,14 @@ model User {
 }
 
 model Order {
-  id       Int    @id @default(autoincrement())
-  offer    String
-  phone    String @unique
-  division String
-  status   String @default("pending")
-  price    String
+  id        Int      @id @default(autoincrement())
+  offer     String
+  phone     String
+  division  String
+  status    String   @default("pending")
+  price     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Payment {

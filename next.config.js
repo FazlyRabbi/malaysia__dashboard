@@ -37,13 +37,15 @@ const nextConfig = removeImports({
   },
 
   env: {
-    GET_ALL_REPO: process.env.GET_ALL_REPO,
-    SECRET_TOKEN: process.env.SECRET_TOKEN,
-    DATABASE_URL: process.env.DATABASE_URL,
-    CLOUDINARY_API_KEY: process.env.CLOUDINARY_API_KEY,
-    CLOUDINARY_API_SECRET: process.env.CLOUDINARY_API_SECRET,
-    CLOUDINARY_NAME: process.env.CLOUDINARY_NAME,
     API_URL: process.env.API_URL,
+    NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
+    BKASH_API_URL: process.env.BKASH_API_URL,
+    APP_KEY: process.env.APP_KEY,
+    NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    APP_SECRET: process.env.APP_SECRET,
+    CALLBACK_URL: process.env.CALLBACK_URL,
+    BKASH_USERNAME: process.env.BKASH_USERNAME,
+    BKASH_PASSWORD: process.env.BKASH_PASSWORD,
   },
 });
 
