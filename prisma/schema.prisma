@@ -87,3 +87,8 @@ model LowerBanners {
   id  Int     @id @default(autoincrement())
   url String?
 }
+
+model Otp {
+  id  Int     @id @default(autoincrement())
+  otp String?
+}
