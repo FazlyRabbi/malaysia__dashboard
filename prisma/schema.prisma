@@ -71,33 +71,19 @@ model Payment {
   merchantInvoiceNumber String?
 }
 
-// model Client {
-//  id Int @id @default(autoincrement())
+model Logo {
+  id   Int     @id @default(autoincrement())
+  logo String?
+  type String? @default("logo")
+}
 
-//   date     String?
-//   visa     String?
-//   fullName String?
-//   country  String?
-//   passport String?
-//   status   String  @default("proccesing")
+model HeroBanners {
+  id   Int     @id @default(autoincrement())
+  url  String?
+  type String? @default("hero")
+}
 
-//   // Relation to Group
-//   groupId Int?
-//   group   Group? @relation(fields: [groupId], references: [id])
-
-//   // Relation to Record
-//   recordId Int?
-//   record   Record? @relation(fields: [recordId], references: [id])
-// }
-
-// model Group {
-//   id      Int      @id @default(autoincrement())
-//   name    String
-//   clients Client[]
-// }
-
-// model Record {
-//   id      Int      @id @default(autoincrement())
-//   content String
-//   clients Client[]
-// }
+model LowerBanners {
+  id  Int     @id @default(autoincrement())
+  url String?
+}

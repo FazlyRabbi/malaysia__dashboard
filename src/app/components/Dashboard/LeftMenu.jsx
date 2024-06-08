@@ -45,6 +45,7 @@ export default function LeftMenu({ sidebar, closeSidebar }) {
             </Typography>
           </Link>
         </div>
+
         <List>
           <Link href={`/orders`} className=" w-full block">
             <ListItem>
@@ -335,6 +336,15 @@ export default function LeftMenu({ sidebar, closeSidebar }) {
               </List>
             </AccordionBody>
           </Accordion>
+
+          <Link href={`/banners`} className=" w-full block">
+            <ListItem>
+              <ListItemPrefix>
+                <FaCommentDollar className="h-5 w-5" />
+              </ListItemPrefix>
+              Logo/Banners
+            </ListItem>
+          </Link>
         </List>
       </Card>
 

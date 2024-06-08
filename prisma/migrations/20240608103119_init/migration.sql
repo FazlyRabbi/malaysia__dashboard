@@ -80,5 +80,31 @@ CREATE TABLE "Payment" (
     CONSTRAINT "Payment_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Logo" (
+    "id" SERIAL NOT NULL,
+    "logo" TEXT,
+    "type" TEXT DEFAULT 'logo',
+
+    CONSTRAINT "Logo_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "HeroBanners" (
+    "id" SERIAL NOT NULL,
+    "url" TEXT,
+    "type" TEXT DEFAULT 'hero',
+
+    CONSTRAINT "HeroBanners_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "LowerBanners" (
+    "id" SERIAL NOT NULL,
+    "url" TEXT,
+
+    CONSTRAINT "LowerBanners_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "User_phone_key" ON "User"("phone");
