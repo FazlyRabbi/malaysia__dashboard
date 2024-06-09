@@ -5,14 +5,15 @@ import {
   List,
   ListItem,
   ListItemPrefix,
-  ListItemSuffix,
-  Chip,
   Accordion,
   AccordionHeader,
   AccordionBody,
 } from "@material-tailwind/react";
+import { logout } from "../../Actions/logout";
 
 import { FaCommentDollar } from "react-icons/fa6";
+import { IoLogoBuffer } from "react-icons/io5";
+import { AiOutlineLogout } from "react-icons/ai";
 
 import {
   PresentationChartBarIcon,
@@ -340,11 +341,18 @@ export default function LeftMenu({ sidebar, closeSidebar }) {
           <Link href={`/banners`} className=" w-full block">
             <ListItem>
               <ListItemPrefix>
-                <FaCommentDollar className="h-5 w-5" />
+                <IoLogoBuffer className="h-5 w-5" />
               </ListItemPrefix>
               Logo/Banners
             </ListItem>
           </Link>
+
+          <ListItem onClick={() => logout()}>
+            <ListItemPrefix>
+              <AiOutlineLogout className="h-5 w-5" />
+            </ListItemPrefix>
+            Logout
+          </ListItem>
         </List>
       </Card>
 

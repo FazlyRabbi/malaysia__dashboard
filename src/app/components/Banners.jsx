@@ -167,6 +167,8 @@ export default function Banners() {
           text: "Please Select at least 1 Lower Banner Image!",
           icon: "info",
         });
+        setIsLoading(false);
+
         return;
       }
       const formData = new FormData();
@@ -209,6 +211,8 @@ export default function Banners() {
           text: "Please Select at least 1 Lower Banner Image!",
           icon: "info",
         });
+        setIsLoading(false);
+
         return;
       }
       const formData = new FormData();
@@ -251,6 +255,8 @@ export default function Banners() {
           text: "Please Select Your Logo!",
           icon: "info",
         });
+        setIsLoading(false);
+
         return;
       }
       const formData = new FormData();
